@@ -6,7 +6,6 @@
 #include <bitset>
 
 /* 関数プロトタイプ宣言 */
-
 struct PID {
     double Kp, Ki, Kd;
     double previous_error, integral;
@@ -16,9 +15,7 @@ double pid_control(PID &pid, double error);
 static void Capture(void); 
 static void motor_cntrol(int Lsensor_count , int Rsensor_count);
 
-PID pid = {1, 0, 0, 0, 0}; 
-
-
+PID pid = {8, 2, 0, 0, 0}; 
 
 /* ライントレースタスク(100msec周期で関数コールされる) */
 void tracer_task(intptr_t unused) {
@@ -54,13 +51,13 @@ static void Capture(void){
         return;
     }
     /*std::cout << "Cols: " << frame.cols << ", Rows: " << frame.rows << std::endl;*/
-    frame = frame(cv::Rect(200, TRIMY, 440, TRIMH));
+    frame = frame(cv::Rect(140, TRIMY, 500, TRIMH));
     cv::cvtColor(frame, frame, cv::COLOR_BGR2GRAY);
     cv::threshold(frame, frame, THRESHOLDVALUE, MAXBINARYVALUE, cv::THRESH_BINARY_INV);
 
-    /*cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
+    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
     cv::morphologyEx(frame, frame, cv::MORPH_OPEN, kernel);
-    cv::morphologyEx(frame, frame, cv::MORPH_CLOSE, kernel);*/
+    cv::morphologyEx(frame, frame, cv::MORPH_CLOSE, kernel);
 
     for (int i = 0; i < 8; ++i) {
         if(cv::countNonZero(frame(cv::Rect(XLPoint[i], 0, B_W, ALLB_Y2))) >= 150 ){
@@ -78,7 +75,7 @@ static void Capture(void){
     cv::waitKey(1);
     camera.release();
     return;
-}
+
 
 double pid_control(PID &pid, double error) {
     pid.integral += error;
@@ -93,7 +90,7 @@ static void motor_cntrol(int Lsensor_count ,int Rsensor_count){
     double control_signal = pid_control(pid, error);
 
     // 基準速度
-    double base_speed = 95;
+    double base_speed = 75;
 
     // 左右のモータ速度の調整
     double left_motor_speed = base_speed - control_signal;
