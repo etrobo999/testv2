@@ -74,6 +74,8 @@ static void Capture(void){
     }
     std::cerr <<  "detectionFlags: " << Lsensor_count << ":" << Rsensor_count<< std::endl;
     motor_cntrol(Lsensor_count , Rsensor_count);
+    cv::imshow("Frame", frame);
+    cv::waitKey(1);
     camera.release();
     return;
 }
