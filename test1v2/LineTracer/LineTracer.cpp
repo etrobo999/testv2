@@ -7,16 +7,18 @@
 
 /* 関数プロトタイプ宣言 */
 
+struct PID {
+    double Kp, Ki, Kd;
+    double previous_error, integral;
+};
+
 double pid_control(PID &pid, double error);
 static void Capture(void); 
 static void motor_cntrol(int Lsensor_count , int Rsensor_count);
 
 PID pid = {0.1, 0.01, 0.05, 0, 0}; 
 
-struct PID {
-    double Kp, Ki, Kd;
-    double previous_error, integral;
-};
+
 
 /* ライントレースタスク(100msec周期で関数コールされる) */
 void tracer_task(intptr_t unused) {
