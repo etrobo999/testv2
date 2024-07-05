@@ -16,7 +16,7 @@ double pid_control(PID &pid, double error);
 static void Capture(void); 
 static void motor_cntrol(int Lsensor_count , int Rsensor_count);
 
-PID pid = {0.1, 0.01, 0.05, 0, 0}; 
+PID pid = {1, 0, 0, 0, 0}; 
 
 
 
@@ -58,9 +58,9 @@ static void Capture(void){
     cv::cvtColor(frame, frame, cv::COLOR_BGR2GRAY);
     cv::threshold(frame, frame, THRESHOLDVALUE, MAXBINARYVALUE, cv::THRESH_BINARY_INV);
 
-    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
+    /*cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
     cv::morphologyEx(frame, frame, cv::MORPH_OPEN, kernel);
-    cv::morphologyEx(frame, frame, cv::MORPH_CLOSE, kernel);
+    cv::morphologyEx(frame, frame, cv::MORPH_CLOSE, kernel);*/
 
     for (int i = 0; i < 8; ++i) {
         if(cv::countNonZero(frame(cv::Rect(XLPoint[i], 0, B_W, ALLB_Y2))) >= 150 ){
